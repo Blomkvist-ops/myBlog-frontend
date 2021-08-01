@@ -41,7 +41,7 @@
 
     <!--all content-->
 
-    <div class="m-container-small m-padded-tb-big animated fadeIn">
+    <div id="waypoint" class="m-container-small m-padded-tb-big animated fadeIn">
         <div class="ui container">
             <div class="ui top attached segment">
                 <div class="ui horizontal link list">
@@ -78,7 +78,7 @@
                         Yahoo、Eric Meyer 和 Alice base.css 中采用的 Reset 都没有很好地考虑中文排版。<i class="serif">Typo.css</i> 要做的就是解决中文排版的问题。</p>
 
                     <p><strong><i class="serif">Typo.css</i> 测试于如下平台：</strong></p>
-                    <table summary="Typo.css 的测试平台列表">
+                    <table class="ui table" summary="Typo.css 的测试平台列表">
                         <thead>
                         <tr>
                             <th>OS/浏览器</th>
@@ -580,7 +580,7 @@ h5,h6{font-size:1em;}
         </div>
     </div>
 
-    <div class="m-fixed m-right-bottom m-padded">
+    <div id="toolbar" class="m-fixed m-right-bottom m-padded" style="display: none">
         <div class="ui vertical icon buttons">
             <button type="button" class="ui teal toc button">Menu</button>
             <a href="#comment-container" class="ui teal button" >Comment</a>
@@ -595,6 +595,9 @@ h5,h6{font-size:1em;}
         </ol>
     </div>
 
+    <div id="qrcode" class="ui wechat-qr flowing popup transition hidden" style="width: 130px !important;">
+        <!--<img src="./static/images/qqerweima.png" alt="" class="ui rounded image" style="width: 120px !important;">-->
+    </div>
 
 
     <br>
@@ -640,8 +643,11 @@ h5,h6{font-size:1em;}
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-    <script src="./static/lib/prism/prism.js"></script>
-    <script src="./static/lib/tocbot/tocbot.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+<script src="./static/lib/prism/prism.js"></script>
+<script src="./static/lib/tocbot/tocbot.min.js"></script>
+<script src="./static/lib/qrcode/qrcode.min.js"></script>
+<script src="./static/lib/waypoints/jquery.waypoints.min.js"></script>
     <script>
         $('.menu.toggle').click(function () {
             $('.m-item').toggleClass('m-mobile-show');
@@ -652,6 +658,11 @@ h5,h6{font-size:1em;}
             popup : $('.payQR.popup'),
             on : 'click',
             position : 'bottom center'
+        });
+
+        $('.wechat').popup({
+            popup : $('.wechat-qr'),
+            position : 'left center'
         });
 
         tocbot.init({
@@ -668,6 +679,32 @@ h5,h6{font-size:1em;}
             on : 'click',
             position : 'left center'
         });
+
+        var qrcode = new QRCode("qrcode", {
+            text: "http://jindo.dev.naver.com/collie",
+            width: 110,
+            height: 110,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+
+        $('#toTop-button').click(function () {
+            $(window).scrollTo(0,500);
+        });
+
+        var waypoint = new Waypoint({
+            element: document.getElementById('waypoint'),
+            handler: function(direction) {
+                if (direction == 'down') {
+                    $('#toolbar').show(100);
+                } else {
+                    $('#toolbar').hide(500);
+                }
+                console.log('Scrolled to waypoint!  ' + direction);
+            }
+        })
+
     </script>
 </body>
 </html>
